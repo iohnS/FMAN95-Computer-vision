@@ -1,7 +1,7 @@
 import scipy.io
-import matplotlib
+import matplotlib.pyplot as plt
 
-data = scipy.io.loadmat("./assignment1data/compEx1.mat")
+data = scipy.io.loadmat("../assignment1data/compEx1.mat")
 x2D = data["x2D"]
 x3D = data["x3D"]
 
@@ -18,9 +18,16 @@ def pflat(data):
     newData = []
     lastCoordinates = data[len(data)-1]
     for row in data:
+        print("NEW", row, lastCoordinates, elementWiseDivision(row, lastCoordinates))
         newData.append(elementWiseDivision(row, lastCoordinates))
     return newData
 
-print("kjashdf")
+pflat2d = pflat(x2D)
+plt.scatter(pflat2d[0], pflat2d[1])
+plt.show()
 
-pflat(x2D)
+pflat3d = pflat(x3D)
+ax = plt.figure().add_subplot(projection="3d")
+ax.scatter(pflat3d[0], pflat3d[1], pflat3d[2])
+
+plt.show()
