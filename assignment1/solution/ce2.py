@@ -1,7 +1,10 @@
+from matplotlib.lines import Line2D
 import scipy.io
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
+from sympy import Matrix
+import math
 
 
 image = mpimg.imread("../assignment1data/compEx2.JPG")
@@ -11,18 +14,49 @@ p1 = data["p1"]
 p2 = data["p2"]
 p3 = data["p3"]
 
-print(p1[0])
-
 def plotPoint(point):
     plt.scatter(point[0], point[1])
     col = (np.random.random(), np.random.random(), np.random.random())
-    plt.axline((point[0][0], point[1][0]), (point[0][1], point[1][1]), color=col)
+    return plt.axline((point[0][0], point[1][0]), (point[0][1], point[1][1]), color=col)
 
 plt.imshow(image, cmap='gray')
 plotPoint(p1)
-plotPoint(p2)
-plotPoint(p3)
-plt.show()
+line2 = plotPoint(p2)
+line3 = plotPoint(p3)
 
-# Looking at the image the lines does not look parallel in 2D. But they are parallel in real life. They will converge in a point, being the vanish point
-# Which is where p2 and p3 interscect. 
+def find_intersection(point1, point2, point3, point4):
+    x1, y1 = point1
+    x2, y2 = point2
+    x3, y3 = point3
+    x4, y4 = point4
+
+    # Find the slopes and intercepts of the two lines
+    slope1 = (y2 - y1) / (x2 - x1)
+    intercept1 = y1 - slope1 * x1
+
+    slope2 = (y4 - y3) / (x4 - x3)
+    intercept2 = y3 - slope2 * x3
+
+    # Find the x-coordinate of the intersection point
+    x_intersection = (intercept2 - intercept1) / (slope1 - slope2)
+
+    # Find the y-coordinate using one of the original equations
+    y_intersection = slope1 * x_intersection + intercept1
+
+    return x_intersection, y_intersection
+
+# Intersection point between p2 and p3
+
+n1, n2 = zip(p2[0], p2[1])
+n3, n4 = zip(p3[0], p3[1])
+intersect_point = find_intersection(n1, n2, n3, n4)
+
+plt.scatter(intersect_point[0], intersect_point[1], zorder=10)
+
+# solve the linear equation system to find the line passing through p1. 
+nullsp = Matrix(np.transpose(p1)).nullspace()[0]
+d = np.abs(intersect_point[0] * nullsp[0] + intersect_point[1] * nullsp[1] + nullsp[2])/math.sqrt(nullsp[0]**2 + nullsp[1]**2)
+
+print(d)
+
+plt.show()
