@@ -9,6 +9,5 @@ def pflat(data):
     newData = []
     lastCoordinates = data[len(data)-1]
     for row in data:
-        print("NEW", row, lastCoordinates, elementWiseDivision(row, lastCoordinates))
         newData.append(elementWiseDivision(row, lastCoordinates))
     return newData
