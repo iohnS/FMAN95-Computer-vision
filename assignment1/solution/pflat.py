@@ -2,7 +2,7 @@ def elementWiseDivision(l1, l2):
     newList = []
     if len(l1) == len(l2):
         for i in range(0, len(l1)):
-            newList.append(l1[i] / l2[1])
+            newList.append(l1[i] / l2[i])
     return newList
 
 def pflat(data):
