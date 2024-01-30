@@ -30,23 +30,22 @@ def find_intersection(point1, point2, point3, point4):
     x3, y3 = point3
     x4, y4 = point4
 
-    # Find the slopes and intercepts of the two lines
+    
     slope1 = (y2 - y1) / (x2 - x1)
     intercept1 = y1 - slope1 * x1
 
     slope2 = (y4 - y3) / (x4 - x3)
     intercept2 = y3 - slope2 * x3
 
-    # Find the x-coordinate of the intersection point
+
     x_intersection = (intercept2 - intercept1) / (slope1 - slope2)
 
-    # Find the y-coordinate using one of the original equations
+    
     y_intersection = slope1 * x_intersection + intercept1
 
     return x_intersection, y_intersection
 
-# Intersection point between p2 and p3
-
+# Intersect P2 och P3
 n1, n2 = zip(p2[0], p2[1])
 n3, n4 = zip(p3[0], p3[1])
 intersect_point = find_intersection(n1, n2, n3, n4)
