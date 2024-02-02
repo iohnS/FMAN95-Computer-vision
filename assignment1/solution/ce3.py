@@ -22,11 +22,11 @@ ep1 = np.append(endpoints, [ones], axis=0)
 sp1 = np.append(startpoints, [ones], axis=0)
 
 h0 = [[1,0,0], [0,1,0], [0,0,1]]
-h1 = [[np.sqrt(3), 1, 1], [1, np.sqrt(3), 1], [0, 0, 2]]
+h1 = [[np.sqrt(3), -1, 1], [1, np.sqrt(3), 1], [0, 0, 2]]
 h2 = [[1, -1, 1], [1, 1, 0], [0, 0, 1]]
 h3 = [[1, 1, 0], [0,2,0], [0, 0, 1]]
 h4 = [[np.sqrt(3), -1, 1], [1, np.sqrt(3), 1], [1/4, 1/2, 2]]
 
-print_grid(sp1, ep1, h4)
+print_grid(sp1, ep1, h1)
 
 plt.show()
