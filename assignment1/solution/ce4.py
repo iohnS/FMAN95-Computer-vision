@@ -35,32 +35,35 @@ fU = pflat(U)
 U1 = pflat(np.matmul(P1, U))
 U2 = pflat(np.matmul(P2, U))
 
-print(P1)
-
 def plotp(coord):
     [xl, yl] = coord
     for i in range(0, len(xl)):
+        print(i)
         plt.scatter(xl[i], yl[i], s=0.1, c='b')
 
-plt.imshow(image1, cmap='gray')
-plotp((U2[0], U2[1]))
+#plt.imshow(image2, cmap='gray')
+#plotp((U2[0], U2[1]))
 
 
 def plot3d():
     cc1 = [e[0] for e in P1np]
-    cc2 = [e[0] for e in P2np]
+    cc2 = [e[0] for e in P2np][:3]
     pa1 = P1[2][0:3]
     pa2 = P2[2][0:3]
+    print(P1)
     
     fig3d = plt.figure()
     sp3d = fig3d.add_subplot(projection='3d')
     sp3d.scatter(cc1[0], cc1[1], cc1[2], c='r')
     sp3d.scatter(cc2[0], cc2[1], cc2[2], c='r')
-    sp3d.plot3D([cc1[0], pa1[0]], [cc1[1], pa1[1]], [cc1[2], pa1[2]])
-    sp3d.plot3D([cc2[0], pa2[0]], [cc2[1], pa2[1]], [cc2[2], pa2[2]])
+    sp3d.quiver(cc1[0], cc1[1], cc1[2], pa1[0], pa1[1], pa1[2])
+    sp3d.quiver(cc2[0], cc2[1], cc2[2], pa2[0], pa2[1], pa2[2])
+    sp3d.set_xlabel("X")
+    sp3d.set_ylabel("y")
     for i in range(0, len(fU[0])):
+        print(i)
         sp3d.scatter(fU[0][i], fU[1][i], fU[2][i], s=0.15, c='b')
     
-#plot3d()    
+    plt.show()
+plot3d()    
 
-plt.show()
