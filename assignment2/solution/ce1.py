@@ -45,17 +45,18 @@ def plotImage(filename, P, x):
 #    plotImage(imfiles[i][0], P[i], x[i])
 #    plt.show()
     
-#plotReconstruction(X, P)
+plotReconstruction(X, P)
+print(len(P[0]))
 
 #for i in range(0, 9):
 #    plotReconstruction(np.matmul(T1inv, X[i]),np.matmul(P[i], T1))
 #    plt.show()
 
-plotReconstruction(pflat(np.matmul(T1inv, X)), P1)
+#plotReconstruction(pflat(np.matmul(T1inv, X)), P1)
+#
+#plt.show()
+#
+#
+#plotReconstruction(pflat(np.matmul(T2inv, X)), P2)
 
-plt.show()
-
-
-plotReconstruction(pflat(np.matmul(T2inv, X)), P2)
-
-plt.show()
+#plt.show()

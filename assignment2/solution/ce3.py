@@ -66,22 +66,20 @@ cc2 = [e[0] for e in P2np][:3]
 pa1 = P1[2][0:2]
 pa2 = P2[2][0:2]
 
-plt.quiver(cc1[0], cc1[1], pa1[0], pa1[1])
-plt.quiver(cc2[0], cc2[1], pa2[0], pa2[1])
+#plt.quiver(cc1[0], cc1[1], pa1[0], pa1[1])
+#plt.quiver(cc2[0], cc2[1], pa2[0], pa2[1])
         
 x1im = pflat(np.matmul(P1, homX))
 x2im = pflat(np.matmul(P2, homX))
 
 
-plt.imshow(cube2)
-for i in range(0, len(x2im[0])):
-    plt.scatter(x2[0][i], x2[1][i], c='b')
-    plt.scatter(x2im[0][i], x2im[1][i], c='r')
+#plt.imshow(cube2)
+#for i in range(0, len(x2im[0])):
+#    plt.scatter(x2[0][i], x2[1][i], c='b')
+#    plt.scatter(x2im[0][i], x2im[1][i], c='r')
 
 #plt.show()
 
 
 K1 = np.linalg.qr(P1)[0]
 K2 = np.linalg.qr(P2)[0]
-
-print(K1)
