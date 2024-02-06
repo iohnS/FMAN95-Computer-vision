@@ -11,8 +11,8 @@ T2 = [[1,0,0,0], [0,1,0,0], [0,0,1,0], [1/16, 1/16, 0,1]]
 
 P2 = P[1]
 
-K1 = pflat(np.linalg.qr(np.matmul(P2, T1))[0])
-K2 = pflat(np.linalg.qr(np.matmul(P2, T2))[0])
+K1 = np.linalg.qr(np.matmul(P2, T1))[0]
+K2 = np.linalg.qr(np.matmul(P2, T2))[0]
 
 print("K1 matrix:")
 for i in range(0, len(K1)):
