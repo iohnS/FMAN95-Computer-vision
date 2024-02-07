@@ -4,9 +4,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from pflat import pflat
 import matplotlib.image as mpimg
+import matplotlib
 import math
 from sympy import Matrix
 from plotcams import plotcams
+import tkinter as tk
+matplotlib.use('TkAgg') # USE TKAGG FOR PERFORMANCE BOOST (USES TKINTER TO RENDER)
 
 def pflat1d(d):
     last = d[-1]
