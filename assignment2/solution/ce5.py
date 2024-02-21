@@ -21,7 +21,7 @@ hx2 = [[ce4.x2[i][0], ce4.x2[i][1], 1]for i in range(0, len(ce4.x2))]
 zeros = [[0] for _ in range(0, len(hx1[0]))]
 X = []                  # each row is a homogenous 3d point that we have approximated with P1 and P2 together with image points x1 and x2
 for i in range(0, len(hx1)):
-    r1 = np.hstack((ce3.P1, [[e] for e in hx1[i]], zeros))
+    r1 = np.hstack((ce3.P1, [[e] for e in hx1[i]], zeros)) # ITS SUPPOSED TO BE MINUS HX1
     r2 = np.hstack((ce3.P2, zeros, [[e] for e in hx2[i]]))
     M = np.vstack((r1, r2))
     [U, S, V] = np.linalg.svd(M)
