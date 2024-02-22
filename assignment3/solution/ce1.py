@@ -42,8 +42,7 @@ F = U @ np.diag(S) @ V
 detF = np.linalg.det(F)
 
 Mv = np.linalg.norm(F @ V[len(V)-1:][0])
-epiConstr = np.transpose(norm2) @ F @ norm1
-#plt.plot(epiConstr) # Values are roughly around zero 
+epiConstr = np.diag(np.transpose(norm2) @ F @ norm1)
 nF = np.transpose(N2) @ F @ N1
 
 l = F @ x1
@@ -75,8 +74,8 @@ def distance(i):
     return np.abs(a * x + b * y + c) / np.sqrt(a**2 + b**2)
 
 distances = [distance(i) for i in range(0, len(xp2))]
-print(np.mean(distances))
-plt.hist(distances, bins=100)
-plt.show()
+#print(np.mean(distances))
+#plt.hist(distances, bins=100)
+#plt.show()
  
 #solF = [[el/F[2][2] for el in row] for row in F] # Fundamental matrix F with F/F[3,3]

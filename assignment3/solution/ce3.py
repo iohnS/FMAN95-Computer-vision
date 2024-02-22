@@ -58,8 +58,8 @@ def distance(i):
     a, b, c = ls[i]
     return np.abs(a * x + b * y + c) / np.sqrt(a**2 + b**2)
 
-distances = [distance(i) for i in range(0, len(xp2))]
-print(np.mean(distances))
-plt.hist(distances, bins=100)
-plt.show()
+#distances = [distance(i) for i in range(0, len(xp2))]
+#print(np.mean(distances))
+#plt.hist(distances, bins=100)
+#plt.show()
 solE = [[el/E[2][2] for el in row] for row in E] # Fundamental matrix E with E/E[3,3]
