@@ -53,9 +53,9 @@ v1 = V1[len(V1)-1:][0]
 M2 = createM(norm2)
 [U2, S2, V2] = np.linalg.svd(M2)
 v2 = V2[len(V2)-1:][0]
-v2 = V2[len(V2)-1:][0]
 
-
+#print(np.linalg.norm(M1 @ v1))
+#print(np.linalg.norm(M2 @ v2))
 
 P1 = np.linalg.inv(N1) @ np.reshape((v1[:12]), [3, 4])
 P2 = np.linalg.inv(N2) @ np.reshape((v2[:12]), [3, 4])
@@ -67,19 +67,26 @@ pa1 = P1[2][0:2]
 pa2 = P2[2][0:2]
 
 #plt.quiver(cc1[0], cc1[1], pa1[0], pa1[1])
+#plt.scatter(cc1[0], cc1[1], c='g')
 #plt.quiver(cc2[0], cc2[1], pa2[0], pa2[1])
-        
+
+
 x1im = pflat(np.matmul(P1, homX))
 x2im = pflat(np.matmul(P2, homX))
 
 
-#plt.imshow(cube2)
-#for i in range(0, len(x2im[0])):
-#    plt.scatter(x2[0][i], x2[1][i], c='b')
-#    plt.scatter(x2im[0][i], x2im[1][i], c='r')
+#plt.imshow(cube1)
+#for i in range(0, len(x1im[0])):
+#    plt.scatter(x1[0][i], x1[1][i], c='b', alpha=1)
+#    plt.scatter(x1im[0][i], x1im[1][i], c='r', alpha=0.5)
 
 #plt.show()
 
 
 K1 = np.linalg.qr(P1)[0]
+K1 = [[e /K1[-1, -1] for e in row]for row in K1]
 K2 = np.linalg.qr(P2)[0]
+K2 = [[e /K2[-1, -1] for e in row]for row in K2]
+#print("K1 matrix:")
+#for i in range(0, len(K1)):
+#    print(K1[i])

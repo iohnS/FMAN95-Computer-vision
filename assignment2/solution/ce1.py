@@ -18,18 +18,18 @@ T2inv = np.linalg.inv(T2)
 
 P1 = []
 for i in range(0, 9):
-    P1.append(np.matmul(P[i], T1))
+    P1.append(np.matmul(P[i], T1inv))
     
 P2 = []
 for i in range(0,9):
-    P2.append(np.matmul(P[i], T2))
+    P2.append(np.matmul(P[i], T2inv))
 
 
 def plotReconstruction(X, P):
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
     ax.scatter(X[0], X[1], X[2], s=0.1)
-    ax.set_box_aspect([1, 1, 1])
+    ax.set_aspect('equal', adjustable='box')
 
     plotcams(P, ax)
 
@@ -45,12 +45,13 @@ def plotImage(filename, P, x):
 #    plotImage(imfiles[i][0], P[i], x[i])
 #    plt.show()
     
-plotReconstruction(X, P)
-print(len(P[0]))
+#plotReconstruction(X, P)
 
 #for i in range(0, 9):
 #    plotReconstruction(np.matmul(T1inv, X[i]),np.matmul(P[i], T1))
 #    plt.show()
+
+plotReconstruction(pflat(T2 @ X), P2)
 
 #plotReconstruction(pflat(np.matmul(T1inv, X)), P1)
 #
@@ -59,4 +60,4 @@ print(len(P[0]))
 #
 #plotReconstruction(pflat(np.matmul(T2inv, X)), P2)
 
-#plt.show()
+plt.show()
