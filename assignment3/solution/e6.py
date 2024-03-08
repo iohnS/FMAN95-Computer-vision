@@ -6,7 +6,7 @@ var('s U W V Xs')
 # Help for solving exercise 6 in assignment 3. 
 
 U = [[1/np.sqrt(2), -1/np.sqrt(2), 0], [1/np.sqrt(2), 1/np.sqrt(2), 0], [0, 0, 1]]
-V = [[1,0,0], [0,0,1], [0,-1,0]]
+V = [[1,0,0], [0,0,-1], [0, 1,0]]
 W = [[0, -1, 0], [1, 0, 0], [0, 0, 1]]
 
 Xs = Matrix([0, 0, 1, s])

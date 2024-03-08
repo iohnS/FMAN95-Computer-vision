@@ -1,5 +1,4 @@
 from ce3 import E, U, V
-from ce1 import N1, N2
 import numpy as np 
 import scipy
 from pflat import pflat, pflat1d
@@ -7,6 +6,7 @@ from plotcams import plotcams
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from sympy import Matrix
+from triangulate import triangulate 
 
 kronan2 = mpimg.imread("../assignment3data/kronan2.JPG")
 x = scipy.io.loadmat("../assignment3data/compEx1data.mat")['x']
@@ -25,19 +25,10 @@ def doEverything(P1, P2):
     pa1 = P1[2][0:3]
     pa2 = P2[2][0:3]
 
-    zeros = [[0] for _ in range(0, len(n1t[0]))]
-    X = []
     inFront = 0
-    for i in range(0, len(n1t)):
-        r1 = np.hstack((P1, [[-e] for e in n1t[i]], zeros))
-        r2 = np.hstack((P2, zeros, [[-e] for e in n2t[i]]))
-        M = np.vstack((r1, r2))
-        [U, S, V] = np.linalg.svd(M)
-        X.append(V[-1][:4])
-    
-    pX = [pflat1d(e) for e in X]
-    for i in pX:
-        if i[2] > 0:
+    X = triangulate(P1, P2, n1t, n2t)
+    for p in X:
+        if p[2] > 0:
             inFront += 1
     fig3d = plt.figure()
     sp3d = fig3d.add_subplot(projection='3d')
@@ -45,7 +36,10 @@ def doEverything(P1, P2):
     sp3d.scatter(cc2[0], cc2[1], cc2[2], c='r')
     sp3d.quiver(cc1[0], cc1[1], cc1[2], pa1[0], pa1[1], pa1[2], color="g")
     sp3d.quiver(cc2[0], cc2[1], cc2[2], pa2[0], pa2[1], pa2[2], color="g")
-    sp3d.scatter([row[0] for row in pX], [row[1] for row in pX], [row[2] for row in pX], c='b', s=0.5)
+    sp3d.scatter([row[0] for row in X], [row[1] for row in X], [row[2] for row in X], c='b', s=0.5)
+    sp3d.set_xlabel('X')
+    sp3d.set_ylabel('Y')
+    sp3d.set_zlabel('Z')
     print(inFront)
     plt.show()
     

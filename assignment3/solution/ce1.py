@@ -29,7 +29,7 @@ n2t = np.transpose(norm2)
 M = []
 
 for i in range(0, len(n1t)):
-    row = [n1t[i][j] * n2t[i][jj] for j in range(0, len(n1t[0])) for jj in range(0, len(n2t[0]))]
+    row = [n2t[i][j] * n1t[i][jj]  for j in range(0, len(n2t[0])) for jj in range(0, len(n1t[0]))]
     M.append(row)
     
 [U, S, V] = np.linalg.svd(M)
@@ -43,7 +43,7 @@ detF = np.linalg.det(F)
 
 Mv = np.linalg.norm(F @ V[len(V)-1:][0])
 epiConstr = np.diag(np.transpose(norm2) @ F @ norm1)
-nF = np.transpose(N2) @ F @ N1
+F = np.transpose(N2) @ F @ N1
 
 l = F @ x1
 l1 = l[0]
@@ -56,26 +56,29 @@ l = l / sqrt_sum_squares
 xp2 = np.transpose(x2)
 xp1 = np.transpose(x1)
 ls = np.transpose(l)
-randomNbr = [random.randint(0, len(n1t)) for _ in range(0, 20)]
-points = [np.transpose(x2)[i] for i in randomNbr]
+randomNbr = [random.randint(0, len(xp2)) for _ in range(0, 20)]
+points = [xp2[i] for i in randomNbr]
+pl = [ls[i]*2000 for i in randomNbr]
 
-def pyRital():
-    # Have to loop as axline only takes a point + a slope
-    for l in ls:
-        plt.axline((l[0], l[1]), l[1]/l[0])
+
 
 #plt.imshow(kronan2)
 #plt.scatter([x[0] for x in points], [x[1] for x in points], c='r', s=10)
-#pyRital()
-
-def distance(i):
-    x, y, z = xp2[i]
-    a, b, c = ls[i]
-    return np.abs(a * x + b * y + c) / np.sqrt(a**2 + b**2)
-
-distances = [distance(i) for i in range(0, len(xp2))]
+#for l in pl:
+#    print(l)
+#    plt.axline((l[0], l[1]), slope=l[1]/l[0], lw=10, c='g')
+#
+#def distance(i):
+#    x, y, z = xp2[i]
+#    a, b, c = ls[i]
+#    return np.abs(a * x + b * y + c) / np.sqrt(a**2 + b**2)
+#
+#
+#distances = [distance(i) for i in range(0, len(xp2))]
 #print(np.mean(distances))
 #plt.hist(distances, bins=100)
-#plt.show()
- 
+#
 #solF = [[el/F[2][2] for el in row] for row in F] # Fundamental matrix F with F/F[3,3]
+#print(solF)
+#
+#plt.show()

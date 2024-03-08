@@ -16,25 +16,26 @@ n2t = np.transpose(normx2)
 
 M = []
 for i in range(0, len(n1t)):
-    row = [n1t[i][j] * n2t[i][jj] for j in range(0, len(n1t[0])) for jj in range(0, len(n2t[0]))]
+    row = [n2t[i][j] * n1t[i][jj] for j in range(0, len(n2t[0])) for jj in range(0, len(n1t[0]))]
     M.append(row)
     
 
 [U, S, V] = np.linalg.svd(M)
 solution = V[len(V)-1:][0]
 Mv = np.linalg.norm(M @ solution) # Check so that Mv = 0 (close enough)
+#print(Mv)
 Eapprox = np.reshape(solution, [3, 3])
 [U, S, V] = np.linalg.svd(Eapprox)
 if np.linalg.det(U @ V) > 0:
     E = U @ np.diag([1,1,0]) @ V
 else:
-    V = [[-e for e in v]for v in V]
+    V = [[-e for e in v] for v in V]
     E = E = U @ np.diag([1,1,0]) @ V
 
-    
 detE = np.linalg.det(E) #Should be zero, in this case it is close (8.74e⁻18)
 #plt.plot(np.diag((np.transpose(normx2) @ E @ normx1))) # Should be close to zero which it is (±0.03)
 F = np.transpose(Kinv) @ E @ Kinv
+
 
 l = F @ x1
 randomNbr = [random.randint(0, len(n1t)) for _ in range(0, 20)]
@@ -62,4 +63,13 @@ def distance(i):
 #print(np.mean(distances))
 #plt.hist(distances, bins=100)
 #plt.show()
-solE = [[el/E[2][2] for el in row] for row in E] # Fundamental matrix E with E/E[3,3]
+solE = [[el/E[2][2] for el in row] for row in E] # Essential matrix E with E/E[3,3]
+
+#The fundamental matrix: 
+#$
+#\begin{bmatrix}
+#0 & 0 & 0.0066\\
+#0 & 0 & -0.03\\
+#-0.008 & 0.03 & 1
+#\end{bmatrix}
+#$
