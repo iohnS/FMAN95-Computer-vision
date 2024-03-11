@@ -91,4 +91,4 @@ distances2 = distances2(:,1);
 %histogram(distances2)
 %plot3(X(1,:), X(2,:), X(3,:), ".")
 
-save("ce2data.mat", "X", "P2")
+save('ce2data.mat','P1', 'P2', 'X', 'hx1', 'hx2', 'K');
