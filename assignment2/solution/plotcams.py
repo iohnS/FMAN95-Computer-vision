@@ -1,8 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-
 def plotcams(P, fig):
     # Plots the principal axes for a set of cameras.
     # P is a list containing all the cameras.
@@ -20,7 +18,7 @@ def plotcams(P, fig):
     c /= c[3, :]
 
     
-    fig.quiver(c[0, :], c[1, :], c[2, :], v[0, :], v[1, :], v[2, :], color='r', linestyle='-', linewidth=1.5, arrow_length_ratio=0.1)
+    fig.quiver(c[0], c[1], c[2], v[0], v[1], v[2], color='r', linestyle='-', linewidth=1.5, arrow_length_ratio=0.1)
     fig.set_xlabel('X')
     fig.set_ylabel('Y')
     fig.set_zlabel('Z')

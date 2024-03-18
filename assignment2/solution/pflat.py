@@ -11,3 +11,8 @@ def pflat(data):
     for row in data:
         newData.append(elementWiseDivision(row, lastCoordinates))
     return newData
+
+
+def pflat1d(d):
+    last = d[-1]
+    return [e / last for e in d]

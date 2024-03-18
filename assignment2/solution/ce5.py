@@ -6,39 +6,48 @@ from pflat import pflat
 import matplotlib.image as mpimg
 import math
 from sympy import Matrix
-import tkinter as tk
 from plotcams import plotcams
-
-def pflat1d(d):
-    last = d[-1]
-    return [e / last for e in d]
-
-hx1 = [[ce4.x1[i][0], ce4.x1[i][1], 1]for i in range(0, len(ce4.x1))]
-hx2 = [[ce4.x2[i][0], ce4.x2[i][1], 1]for i in range(0, len(ce4.x2))]
-zeros = [[0] for _ in range(0, len(hx1[0]))]
-def DLT(x1, x2):
-    X = []                  # each row is a homogenous 3d point that we have approximated with P1 and P2 together with image points x1 and x2
-    for i in range(0, len(x1)):
-        r1 = np.hstack((ce3.P1, [[e] for e in x1[i]], zeros)) # ITS SUPPOSED TO BE MINUS HX1
-        r2 = np.hstack((ce3.P2, zeros, [[e] for e in x2[i]]))
-        M = np.vstack((r1, r2))
-        [U, S, V] = np.linalg.svd(M)
-        X.append(pflat1d(V[-1][:4]))
-    
-    return X
-
-X = DLT(hx1, hx2)
-
-xproj1 = pflat(np.matmul(ce3.P1, np.transpose(X)))
-xproj2 = pflat(np.matmul(ce3.P2, np.transpose(X)))
-
-xproj1k = (np.linalg.inv(ce3.K1) @ xproj1)
-xproj2k = (np.linalg.inv(ce3.K2) @ xproj2)
-hx1k = np.transpose(np.linalg.inv(ce3.K1) @ np.transpose(hx1))
-hx2k = np.transpose(np.linalg.inv(ce3.K2) @ np.transpose(hx2))
+from triangulate import triangulate
 
 cube1 = mpimg.imread("../assignment2data/cube1.JPG")
 cube2 = mpimg.imread("../assignment2data/cube2.JPG")
+x1 = ce4.x1
+x2 = ce4.x2
+K1 = ce3.K1
+K2 = ce3.K2
+P1 = ce3.P1
+P2 = ce3.P2
+hx1 = [[x1[i][0], x1[i][1], 1]for i in range(0, len(x1))]
+hx2 = [[x2[i][0], x2[i][1], 1]for i in range(0, len(x2))]
+zeros = [[0] for _ in range(0, len(hx1[0]))]
+
+
+X = triangulate(P1, P2, hx1, hx2)
+
+xproj1 = pflat(P1 @ np.transpose(X))
+xproj2 = pflat(P2 @ np.transpose(X))
+
+# Computed points and SIFT points:
+#plt.imshow(cube2)
+#plt.scatter(xproj2[0], xproj2[1], s=1, c='r')
+#plt.scatter(np.transpose(hx2)[0], np.transpose(hx2)[1], s=1, c='b')
+
+xpk1 = pflat(np.linalg.inv(K1) @ np.transpose(hx1))
+xpk2 = pflat(np.linalg.inv(K2) @ np.transpose(hx2))
+P1K = np.linalg.inv(K1) @ P1
+P2K = np.linalg.inv(K2) @ P2
+
+Xk = triangulate(P1K, P2K, np.transpose(xpk1), np.transpose(xpk2))
+
+xproj1k = pflat(P1 @ np.transpose(Xk))
+xproj1k = np.transpose(list(filter(lambda x: (x[0] > 0 and x[0] < 1930), np.transpose(xproj1k))))
+xproj2k = pflat(P2 @ np.transpose(Xk))
+xproj2k = np.transpose(list(filter(lambda x: (x[0] > 0 and x[0] < 1930), np.transpose(xproj2k))))
+
+# Computed points and SIFT points with normalization:
+#plt.imshow(cube2)
+#plt.scatter(np.transpose(hx2)[0], np.transpose(hx2)[1], s=1, c='b')
+#plt.scatter(xproj2k[0], xproj2k[1], s=1, c='r')
 
 goodPoints = []
 for i in range(0, len(xproj1[0])):
@@ -57,21 +66,13 @@ pa2 = ce3.P2[2][:3]
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 ax.set_aspect('equal', adjustable='box')
-plotcams([ce3.P1], ax)
-plotcams([ce3.P2], ax)
-Xg = np.transpose([X[i] for i in goodPoints])
-#ax.scatter(X[0], X[1], X[2], s=0.5, c='b')
+plotcams([P1], ax)
+plotcams([P2], ax)
+Xg = np.transpose([Xk[i] for i in goodPoints])
 ax.scatter(Xg[0], Xg[1], Xg[2], s=0.5, c='b')
 ax.scatter(ce3.Xmodel[0], ce3.Xmodel[1], ce3.Xmodel[2], s=0.5, c='r')
     
 #for i in range(0, len(ep1[0])):
 #    ax.plot([s[0][i], endpoints[0][i]], [startpoints[1][i], endpoints[1][i]], "b")
-
-
-#plt.imshow(cube1)
-
-#for i in range(0, len(hx2k)):
-#    plt.scatter(hx2k[i][0], hx2k[i][1], c='b', s=0.1)
-#    plt.scatter(xproj2k[0][i], xproj2k[1][i], c='r', s=0.1)
 
 plt.show()

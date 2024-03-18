@@ -4,6 +4,8 @@ import matplotlib.image as mpimg
 import numpy as np
 from pflat import pflat
 from sympy import Matrix
+from rq import rq
+from plotcams import plotcams
 
 
 data = sp.io.loadmat("../assignment2data/compEx3data.mat")                                              #Read data
@@ -43,10 +45,6 @@ def createM(x):
         M.append(zeros + zeros + list(threeDPoints[i]) + zer*i + [float(-1)] + zer*(len(threeDPoints) - (i + 1)))
     return M 
 
-
-
-ex =  [[3, 0, 0], [0, 2, 0], [0, 0, 1]]                                                      # Reshape is correct
-
 M1 = createM(norm1)
 [U1, S1, V1] = np.linalg.svd(M1)                                                    #svd returns Hermitian matrix for V. 
 v1 = V1[len(V1)-1:][0]                                                       
@@ -66,13 +64,19 @@ cc2 = [e[0] for e in P2np][:3]
 pa1 = P1[2][0:2]
 pa2 = P2[2][0:2]
 
-#plt.quiver(cc1[0], cc1[1], pa1[0], pa1[1])
-#plt.scatter(cc1[0], cc1[1], c='g')
-#plt.quiver(cc2[0], cc2[1], pa2[0], pa2[1])
-
-
 x1im = pflat(np.matmul(P1, homX))
 x2im = pflat(np.matmul(P2, homX))
+
+pim1 = P1 @ homX
+pim2 = P2 @ homX
+
+#fig = plt.figure()
+#ax = fig.add_subplot(projection='3d')
+#ax.set_aspect('equal', adjustable='box')
+#plotcams([P1], ax)
+#plotcams([P2], ax)
+#ax.scatter(Xmodel[0], Xmodel[1], Xmodel[2], s=0.5, c='b')
+
 
 
 #plt.imshow(cube1)
@@ -80,13 +84,17 @@ x2im = pflat(np.matmul(P2, homX))
 #    plt.scatter(x1[0][i], x1[1][i], c='b', alpha=1)
 #    plt.scatter(x1im[0][i], x1im[1][i], c='r', alpha=0.5)
 
-#plt.show()
+plt.show()
 
 
-K1 = np.linalg.qr(P1)[0]
+K1 = rq(P1)[0]
 K1 = [[e /K1[-1, -1] for e in row]for row in K1]
-K2 = np.linalg.qr(P2)[0]
+K2 = rq(P2)[0]
 K2 = [[e /K2[-1, -1] for e in row]for row in K2]
 #print("K1 matrix:")
 #for i in range(0, len(K1)):
 #    print(K1[i])
+#    
+#print("K2 matrix:")
+#for i in range(0, len(K2)):
+#    print(K2[i])
