@@ -8,8 +8,8 @@ Kinv = np.linalg.inv(K)
 x = scipy.io.loadmat("../assignment3data/compEx1data.mat")['x']
 [x1, x2] = [x[0][0], x[1][0]] # 2008 points.
 
-normx1 = np.matmul(Kinv, x1)
-normx2 = np.matmul(Kinv, x2)
+normx1 = Kinv @ x1
+normx2 = Kinv @ x2
 
 n1t = np.transpose(normx1)
 n2t = np.transpose(normx2)
@@ -30,12 +30,12 @@ if np.linalg.det(U @ V) > 0:
     E = U @ np.diag([1,1,0]) @ V
 else:
     V = [[-e for e in v] for v in V]
-    E = E = U @ np.diag([1,1,0]) @ V
+    E = U @ np.diag([1,1,0]) @ V
+
 
 detE = np.linalg.det(E) #Should be zero, in this case it is close (8.74e⁻18)
 #plt.plot(np.diag((np.transpose(normx2) @ E @ normx1))) # Should be close to zero which it is (±0.03)
 F = np.transpose(Kinv) @ E @ Kinv
-
 
 l = F @ x1
 randomNbr = [random.randint(0, len(n1t)) for _ in range(0, 20)]
@@ -63,13 +63,4 @@ def distance(i):
 #print(np.mean(distances))
 #plt.hist(distances, bins=100)
 #plt.show()
-solE = [[el/E[2][2] for el in row] for row in E] # Essential matrix E with E/E[3,3]
-
-#The fundamental matrix: 
-#$
-#\begin{bmatrix}
-#0 & 0 & 0.0066\\
-#0 & 0 & -0.03\\
-#-0.008 & 0.03 & 1
-#\end{bmatrix}
-#$
+E = [[el/E[-1][-1] for el in row] for row in E] # Essential matrix E with E/E[3,3]

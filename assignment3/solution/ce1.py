@@ -43,9 +43,12 @@ detF = np.linalg.det(F)
 
 Mv = np.linalg.norm(F @ V[len(V)-1:][0])
 epiConstr = np.diag(np.transpose(norm2) @ F @ norm1)
+oldF = np.transpose(np.eye(3)) @ F @ np.eye(3)
 F = np.transpose(N2) @ F @ N1
 
-l = F @ x1
+
+
+l = oldF @ x1
 l1 = l[0]
 l2 = l[1]
 sum_squares = l1**2 + l2**2
@@ -68,17 +71,17 @@ pl = [ls[i]*2000 for i in randomNbr]
 #    print(l)
 #    plt.axline((l[0], l[1]), slope=l[1]/l[0], lw=10, c='g')
 #
-#def distance(i):
-#    x, y, z = xp2[i]
-#    a, b, c = ls[i]
-#    return np.abs(a * x + b * y + c) / np.sqrt(a**2 + b**2)
-#
-#
-#distances = [distance(i) for i in range(0, len(xp2))]
-#print(np.mean(distances))
-#plt.hist(distances, bins=100)
+def distance(i):
+    x, y, z = n2t[i]
+    a, b, c = ls[i]
+    return np.abs(a * x + b * y + c) / np.sqrt(a**2 + b**2)
+
+
+distances = [distance(i) for i in range(0, len(xp2))]
+print(np.mean(distances))
+plt.hist(distances, bins=100)
 #
 #solF = [[el/F[2][2] for el in row] for row in F] # Fundamental matrix F with F/F[3,3]
 #print(solF)
 #
-#plt.show()
+plt.show()

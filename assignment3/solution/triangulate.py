@@ -9,6 +9,6 @@ def triangulate(P1, P2, x1, x2):
         r2 = np.hstack((P2, zeros, [[-e] for e in x2[i]]))
         M = np.vstack((r1, r2))
         [U, S, V] = np.linalg.svd(M)
-        X.append(pflat1d(V[-1][:4]))
+        X.append(V[-1][:4])
     
     return X
