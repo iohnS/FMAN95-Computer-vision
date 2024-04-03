@@ -17,9 +17,11 @@ xy2_mean = [np.mean([x2[i]]) for i in range(0,2)]
 xy1_std = [np.std([x1[i]]) for i in range(0,2)]
 xy2_std = [np.std([x2[i]]) for i in range(0,2)]
 
-N1 = [[1/xy1_std[0], 0, -xy1_mean[0]/xy1_std[0]], [0, 1/xy1_std[1], -xy1_mean[1]/xy1_std[1]], [0,0,1]]  #Normalization matrices
-N2 = [[1/xy2_std[0], 0, -xy2_mean[0]/xy2_std[0]], [0, 1/xy2_std[1], -xy2_mean[1]/xy2_std[1]], [0,0,1]]
+#N1 = [[1/xy1_std[0], 0, -xy1_mean[0]/xy1_std[0]], [0, 1/xy1_std[1], -xy1_mean[1]/xy1_std[1]], [0,0,1]]  #Normalization matrices
+#N2 = [[1/xy2_std[0], 0, -xy2_mean[0]/xy2_std[0]], [0, 1/xy2_std[1], -xy2_mean[1]/xy2_std[1]], [0,0,1]]
 
+N1 = np.eye(3)
+N2 = np.eye(3)
 
 norm1 = N1 @ x1                                                                                         #Normalized points                                          
 norm2 = N2 @ x2
@@ -43,12 +45,9 @@ detF = np.linalg.det(F)
 
 Mv = np.linalg.norm(F @ V[len(V)-1:][0])
 epiConstr = np.diag(np.transpose(norm2) @ F @ norm1)
-oldF = np.transpose(np.eye(3)) @ F @ np.eye(3)
 F = np.transpose(N2) @ F @ N1
 
-
-
-l = oldF @ x1
+l = F @ x1
 l1 = l[0]
 l2 = l[1]
 sum_squares = l1**2 + l2**2
@@ -72,7 +71,7 @@ pl = [ls[i]*2000 for i in randomNbr]
 #    plt.axline((l[0], l[1]), slope=l[1]/l[0], lw=10, c='g')
 #
 def distance(i):
-    x, y, z = n2t[i]
+    x, y, z = xp2[i]
     a, b, c = ls[i]
     return np.abs(a * x + b * y + c) / np.sqrt(a**2 + b**2)
 
