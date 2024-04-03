@@ -82,10 +82,10 @@ for i in range(0, N):
 print(bestInliers)
 print(bestH)
 
-print(bestH @ np.transpose(xA))
-print(bestH @ np.transpose(xB))
+#print(bestH @ np.transpose(xA))
+#print(bestH @ np.transpose(xB))
 
-img3 = cv.drawMatches(img1, keypointsA1, img2, keypointsA2, matches, img2, flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-cv.imshow("Matches", img3)
-cv.waitKey(0)
+#img3 = cv.drawMatches(img1, keypointsA1, img2, keypointsA2, matches, img2, flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+#cv.imshow("Matches", img3)
+#cv.waitKey(0)
 

@@ -4,34 +4,28 @@
 
 load("ce2data.mat");
 
-P = {P1, P2};
+P = {K*P1, K*P2};
 U = X;
-u = {K\hx1, K\hx2};
+u = {hx1, hx2};
 
-gammak = 0.0001;
 
-% Computes the reprejection error and the values of all the residuals
-% for the current solution P ,U, u .
+gammak = 10^-10;
+
 [err, res] = ComputeReprojectionError(P, U, u);
-
-%Computes the r and J matrices for the appoximate linear least squares problem .
-[r, J] = LinearizeReprojErr(P, U, u);  
-
-% Computes the LM update .
+[r, J]=LinearizeReprojErr(P,U,u);
 deltav = -gammak *J' * r ;
-
-%histogram(res); % PLOT FOR BEFORE ITERATIONS.
+[Pnew, Unew] = update_solution(deltav, P, U);
 
 n = 10;
-
-% Update the variables.
-[Pnew, Unew] = update_solution(deltav, P, U);
+plot(0, sum(res), 'r*')
+hold on
 
 for i=1:n
     [err, res] = ComputeReprojectionError(Pnew, Unew, u);
     [r, J]=LinearizeReprojErr(Pnew,Unew,u);
     deltav = -gammak *J' * r ;
     [Pnew,Unew]=update_solution(deltav,Pnew,Unew);
+    plot(i, sum(res), 'r*')
 end
-
-histogram(res)
+RMS = sqrt(err/size(res,2));
+disp(RMS)
